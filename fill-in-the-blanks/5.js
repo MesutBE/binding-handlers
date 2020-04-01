@@ -2,31 +2,31 @@ try {
   const title = 'fill-in-5';
   console.group(title);
 
-  const _ = {
+  const obj = {
     state: {
       word: ''
     },
     log: [],
     get _() { return _ },
     set _(newOne) { this.state.word = newOne },
-    _: function () {
-      this.word = this.word
+    reverseWord: function () {
+      this.state.word = this.state.word
         .split('').reverse().join('');
     },
     keepLetters: function () {
-      this.word = this.word.replace(/[^a-zA-Z]/gi, '');
+      this.state.word = this.state.word.replace(/[^a-zA-Z]/gi, '');
     },
     handler: function (element, event) {
       // debugger;
-      const newWord = event.target._;
+      const newWord = event.target.value;
       this.word = newWord;
       if (this.word.length > 20) {
         this.reverseWord();
       } else {
-        this._();
+        this.keepLetters();
       }
       element.innerHTML = this.word;
-      this._.push({
+      this.log.push({
         newWord,
         length: newWord.length,
         thisWord: this.word
@@ -35,12 +35,12 @@ try {
     view: function (id) {
       // debugger;
       const outputEl = document.createElement('p');
-      outputEl.innerHTML = this.word;
+      outputEl.innerHTML = this.state.word;
 
       const inputEl = document.createElement('input');
       inputEl.type = 'text';
       inputEl.placeholder = 'type here';
-      inputEl.onkeyup = this.handler._(_, outputEl);
+      inputEl.onkeyup = this.handler.bind(obj.state, outputEl);
 
       const container = document.createElement('div');
       container.id = id;
@@ -51,13 +51,13 @@ try {
         if (e.target === e.currentTarget) console.log(title, this);
       }).bind(this);
 
-      return _;
+      return container;
     },
   }
-
+  
   document
     .getElementById('root')
-    .appendChild(_.view(title));
+    .appendChild(obj.view(title));
 
 
 
@@ -69,34 +69,34 @@ try {
     }
   };
 
-  assert(obj.word === '', 'Test 0');
+  assert(obj.state.word === '', 'Test 0');
 
-  obj.word = 'asdf';
+  obj.state.word = 'asdf';
   obj.reverseWord();
-  assert(obj.word === 'fdsa', 'Test 1 - reverseWord');
+  assert(obj.state.word === 'fdsa', 'Test 1 - reverseWord');
 
-  obj.word = 'abcdefghijklmnopqrstuvwxyz';
+  obj.state.word = 'abcdefghijklmnopqrstuvwxyz';
   obj.reverseWord();
-  assert(obj.word === 'zyxwvutsrqponmlkjihgfedcba', 'Test 2 - reverseWord');
+  assert(obj.state.word === 'zyxwvutsrqponmlkjihgfedcba', 'Test 2 - reverseWord');
 
-  obj.word = '--987--|';
+  obj.state.word = '--987--|';
   obj.reverseWord();
-  assert(obj.word === '|--789--', 'Test 3 - reverseWord');
+  assert(obj.state.word === '|--789--', 'Test 3 - reverseWord');
 
-  obj.word = 'asdf';
+  obj.state.word = 'asdf';
   obj.keepLetters();
-  assert(obj.word === 'asdf', 'Test 4 - keepLetters');
+  assert(obj.state.word === 'asdf', 'Test 4 - keepLetters');
 
-  obj.word = '1@2-5+6';
+  obj.state.word = '1@2-5+6';
   obj.keepLetters();
-  assert(obj.word === '', 'Test 5 - keepLetters');
+  assert(obj.state.word === '', 'Test 5 - keepLetters');
 
-  obj.word = 'a_s0d`f';
+  obj.state.word = 'a_s0d`f';
   obj.keepLetters();
-  assert(obj.word === 'asdf', 'Test 6 - keepLetters');
+  assert(obj.state.word === 'asdf', 'Test 6 - keepLetters');
 
-  obj.word = '';
-  assert(obj.word === '', 'Test 7');
+  obj.state.word = '';
+  assert(obj.state.word === '', 'Test 7');
 
   console.groupEnd();
 } catch (err) {
