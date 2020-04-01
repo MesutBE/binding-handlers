@@ -11,26 +11,27 @@ try {
       result: 1
     },
     log: [],
-    updateState: function (num, mod) { // 5 mistakes
-      this.number = num;
-      this.modulo = mod;
-      this.result = this.num % this.mod;
-    },
-    handler: function (event) { // 2 mistakes
+    updateState: function (num, mod) { // 5 mistakes solved
       // debugger;
-      const form = event.form;
+      this.state.number = num;
+      this.state.modulo = mod;
+      this.state.result = num % mod;
+    },
+    handler: function (event) { // 2 mistakes solved
+      // debugger;
+      const form = event.target.form;
       const newNum = Number(form.newNum.value);
       const newMod = Number(form.newMod.value);
       this.updateState(newNum, newMod);
-      form.lastChild.value = this.state.result;
+      form.lastChild.innerHTML = this.state.result;
       this.log.push(
         JSON.parse(JSON.stringify(this.state))
       );
     },
-    view: function (id) { // 2 mistakes
+    view: function (id) { // 2 mistakes solved
       // debugger;
       const outputEl = document.createElement('code');
-      outputEl.marginLeft = '5%';
+      outputEl.style.marginLeft = '5%';
       outputEl.innerHTML = this.state.result;
 
       const numInputEl = document.createElement('input');
@@ -55,6 +56,7 @@ try {
       const container = document.createElement('div');
       container.id = id;
       container.className = 'exercise';
+      container.appendChild(formEl);
       container.onclick = (function (e) {
         if (e.target === e.currentTarget) console.log(title, this);
       }).bind(this);
