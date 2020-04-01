@@ -7,8 +7,8 @@ try {
       word: ''
     },
     log: [],
-    get _() { return _ },
-    set _(newOne) { this.state.word = newOne },
+    get word() { return this.state.word },
+    set word(newOne) { this.state.word = newOne },
     reverseWord: function () {
       this.state.word = this.state.word
         .split('').reverse().join('');
@@ -40,7 +40,7 @@ try {
       const inputEl = document.createElement('input');
       inputEl.type = 'text';
       inputEl.placeholder = 'type here';
-      inputEl.onkeyup = this.handler.bind(obj.state, outputEl);
+      inputEl.onkeyup = this.handler.bind(this, outputEl);
 
       const container = document.createElement('div');
       container.id = id;

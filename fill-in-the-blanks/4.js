@@ -14,7 +14,7 @@ try {
     renderState: function () {
       // debugger;
       const liElements = Object.keys(this.state)
-        .map(key => `\n <li><code>${key}: ${_}</code></li>`)
+        .map(key => `\n <li><code>${key}: ${this.state[key]}</code></li>`)
         .reduce((allLis, liStr) => allLis + liStr, '');
       return '<ul>' + liElements + '\n</ul>';
     },
@@ -29,7 +29,6 @@ try {
       } else if (action === 'remove key') {
         this.remove(key);
       };
-
       display.innerHTML = this.renderState();
 
       this.log.push({
