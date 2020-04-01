@@ -10,24 +10,24 @@ try {
       y: 0
     },
     log: [],
-    renderState: function () { // 2 mistakes
-      return `{ X: ` + ${ this.state.x } +`, Y: ` + ${ this.state.y } +` }`;
+    renderState: function () { // 2 mistakes solved
+      return `X: ${this.state.x}, Y: ${ this.state.y }`;
     },
-    handler: function (event) { // 3 mistakes
-      debugger;
-      this.state.x = Number(event.X);
-      this.state.y = Number(event.Y);
-      event.innerHTML = this.renderState();
+    handler: function (container, event) { // 3 mistakes
+      // debugger;
+      this.state.x = Number(event.x);
+      this.state.y = Number(event.y);
+      container.innerHTML = this.renderState();
       this.log.push(
         JSON.parse(JSON.stringify(this.state))
       );
     },
-    view: function (id) { // 3 mistakes
+    view: function (id) { // 3 mistakes solved
       // debugger;
-      const container = document.createElement(div);
+      const container = document.createElement('div');
       container.id = id;
-      container.innerHTML = this.renderState.bind(this);
-      container.onmousemove = this.handler(this);
+      container.innerHTML = this.renderState();
+      container.onmousemove = this.handler.bind(this, container);
       container.className = 'exercise';
 
       container.onclick = (function (e) {
